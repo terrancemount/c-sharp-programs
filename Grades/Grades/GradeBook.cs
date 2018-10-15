@@ -24,6 +24,11 @@ namespace Grades
         {
             var stats = new GradeStatistics();
 
+            if (grades.Count == 0)
+            {
+                return stats;
+            }
+
             stats.lowest = grades.Min();
             stats.highest = grades.Max();
             stats.average = grades.Average();
