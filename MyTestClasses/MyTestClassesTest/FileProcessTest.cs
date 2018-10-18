@@ -36,7 +36,8 @@ namespace MyTestClassesTest
         [TestInitialize]
         public void TestInitialize()
         {
-            if(TestContext.TestName == "FileNameDoesExist")
+            //this will match with any function that starts with the same name convention
+            if(TestContext.TestName.StartsWith("FileNameDoesExist"))
             {
                 SetGoodFileName();
                 if (!string.IsNullOrEmpty(_goodFileName))
@@ -50,7 +51,7 @@ namespace MyTestClassesTest
         [TestCleanup]
         public void TestCleanup()
         {
-            if (TestContext.TestName == "FileNameDoesExist")
+            if (TestContext.TestName.StartsWith("FileNameDoesExist"))
             {
                 if (!string.IsNullOrEmpty(_goodFileName))
                 {
@@ -61,6 +62,7 @@ namespace MyTestClassesTest
         }
         #endregion
 
+        #region Helper - SetGoodFileName
         /**
          * Sets the good file name for testing.
          */
@@ -73,7 +75,36 @@ namespace MyTestClassesTest
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
             }
         }
-       
+
+        #endregion
+
+        //shows how to write out a simple message
+        [TestMethod]
+        [Owner("Terrance")]
+        public void FileNameDoesExistSimpleMessage()
+        {
+            FileProcess fp = new FileProcess(); //Arrange
+            bool fromCall;
+
+            fromCall = fp.FileExists(_goodFileName); //Act
+
+            Assert.IsFalse(fromCall, "File Does NOT Exist."); //assert
+        }
+
+        //Paul is a big fan of putting messages in the assert.
+        //shows how to write out a simple message
+        [TestMethod]
+        [Owner("Terrance")]
+        public void FileNameDoesExistSimpleMessageWithFormatting()
+        {
+            FileProcess fp = new FileProcess(); //Arrange
+            bool fromCall;
+
+            fromCall = fp.FileExists(_goodFileName); //Act
+
+            //give a message with formatting.  Adds the filename so you can start tracking down were the error is.  
+            Assert.IsFalse(fromCall, "File '{0}' Does NOT Exist.", _goodFileName); //assert
+        }
 
 
         //write test methods with discriptive method names so you can infer the purpose by reading the method name.
